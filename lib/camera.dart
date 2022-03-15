@@ -18,7 +18,7 @@ class camera extends StatefulWidget {
 }
 
 class _cameraState extends State<camera> {
-  File _image;
+  //File _image;
   final image_piker=ImagePicker();
   @override
   Widget build(BuildContext context) {
