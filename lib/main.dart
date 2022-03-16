@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sos_screen.dart';
 //import 'try.dart';
-import 'camera.dart';
+import 'camera_page.dart';
 
 
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'home page',
       debugShowCheckedModeBanner: false,
-      home:camera(),
+      home:camera_page(),
     );
   }
 }

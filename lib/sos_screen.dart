@@ -1,3 +1,6 @@
+import 'package:camera/camera.dart';
+import 'package:client_side/camera_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -7,6 +10,7 @@ import 'colors.dart';
 import 'texts.dart';
 import 'map_class.dart';
 import 'dart:async';
+import 'package:camera/camera.dart';
 
 
 class Sos extends StatefulWidget {
@@ -82,75 +86,155 @@ class _SosState extends State<Sos> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(CitySafty, style: TextStyle(color: app_colors.city_safty),),
+        title: Text(my_texts.CitySafty, style: TextStyle(color: app_colors.city_safty),),
         backgroundColor: app_colors.app_bar_background,
         elevation: 10,
         actions: [
           IconButton(
             onPressed:()=> {},
             icon: Icon(Icons.arrow_drop_down_circle),
-          )
+          ),
         ],
       ),
-      body: FlutterMap(
-        mapController: _mapController,
+      body:Container(
+        child: Stack(
+        children: [
+          Container(
+            child: FlutterMap(
+              mapController: _mapController,
 
-        options: MapOptions(
-          center: LatLng(map_class.lat,map_class.long),
-          zoom: 13.0,
+              options: MapOptions(
+                center: LatLng(map_class.lat,map_class.long),
+                zoom: 13.0,
 
 
-        ),
-
-        layers: [
-          TileLayerOptions(
-            urlTemplate: "https://api.mapbox.com/styles/v1/citysafty/ckzr6bk8m007h15qpnoihdu94/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY2l0eXNhZnR5IiwiYSI6ImNrenI1YnhjYjBlMm4ycHBreGR6aWNscXgifQ.tB3OAhmkkVmY4ztI_cwG9Q",
-            additionalOptions: {
-              'accessToken':'pk.eyJ1IjoiY2l0eXNhZnR5IiwiYSI6ImNrenI1YnhjYjBlMm4ycHBreGR6aWNscXgifQ.tB3OAhmkkVmY4ztI_cwG9Q',
-              'id': 'mapbox.mapbox-streets-v8'
-
-            },
-            attributionBuilder: (_) {
-              return Text("© OpenStreetMap contributors");
-            },
-          ),
-          MarkerLayerOptions(
-            markers: [
-              Marker(
-                  width: 80.0,
-                  height: 80.0,
-                  point: LatLng(map_class.lat, map_class.long),
-                  builder:(_){
-                    return Icon(Icons.location_on,size: 50.0,color: Colors.red);
-                  }
               ),
-            ],
+
+              layers: [
+                TileLayerOptions(
+                  urlTemplate: "https://api.mapbox.com/styles/v1/citysafty/ckzr6bk8m007h15qpnoihdu94/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY2l0eXNhZnR5IiwiYSI6ImNrenI1YnhjYjBlMm4ycHBreGR6aWNscXgifQ.tB3OAhmkkVmY4ztI_cwG9Q",
+                  additionalOptions: {
+                    'accessToken':'pk.eyJ1IjoiY2l0eXNhZnR5IiwiYSI6ImNrenI1YnhjYjBlMm4ycHBreGR6aWNscXgifQ.tB3OAhmkkVmY4ztI_cwG9Q',
+                    'id': 'mapbox.mapbox-streets-v8'
+
+                  },
+                  attributionBuilder: (_) {
+                    return Text("© OpenStreetMap contributors");
+                  },
+                ),
+                MarkerLayerOptions(
+                  markers: [
+                    Marker(
+                        width: 80.0,
+                        height: 80.0,
+                        point: LatLng(map_class.lat, map_class.long),
+                        builder:(_){
+                          return Icon(Icons.location_on,size: 50.0,color: Colors.red);
+                        }
+                    ),
+                  ],
+                ),
+              ],
+
+            ),
           ),
+          Container(
+            padding: const EdgeInsets.only(bottom:10),
+            child:
+            Column(
+              children: [
+                SizedBox(height: 560,),
+                Row(
+                  children: [
+                    SizedBox(width: 30,),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(90),
+                          boxShadow:[
+                            BoxShadow(
+                                color: app_colors.buttom_shadow,
+                                blurRadius: 20,
+                                offset: Offset(8,5)
+
+                            ),
+                            BoxShadow(
+                                color: app_colors.buttom_shadow,
+                                blurRadius: 20,
+                                offset: Offset(-8,-5)
+
+                            ),
+                          ]
+                      ),
+                      child: ElevatedButton(
+                        onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>camera_page()),);
+                        },
+                        child: Icon(Icons.camera_alt,size: 40.0,),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(200.0)),
+                          primary: app_colors.cmera_button,
+                          minimumSize: Size(70.0, 70.0),
+
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+
+              ],
+            ),
+          )
+
+
+
+
 
         ],
 
-      ),
+      ),) ,
       floatingActionButton:
-      SizedBox(height: 100.0,
-        width: 100.0,
-        child:
+      Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(90),
+            boxShadow:[
+        BoxShadow(
+        color: app_colors.buttom_shadow,
+            blurRadius: 20,
+            offset: Offset(8,5)
 
-        FloatingActionButton(
-          //child: Icon(Icons.ac_unit),
-          child: Text("SOS"),
-          backgroundColor: Colors.red,
+        ),
+        BoxShadow(
+            color: app_colors.buttom_shadow,
+            blurRadius: 20,
+            offset: Offset(-8,-5)
 
-          onPressed: () async {
-            Position position=await _determinePosition();
-            //await GetAddressFromLatLong(position);
-            print("hello2");
-            raload(position);
-            _mapController.move(LatLng(map_class.lat,map_class.long), 13.0);
-          },
+        ),
+            ]
         ),
 
+        child: SizedBox(height: 100.0,
+          width: 100.0,
+          child:
+
+          FloatingActionButton(
+            //child: Icon(Icons.ac_unit),
+            child: Text("SOS"),
+            backgroundColor: Colors.red,
+
+
+            onPressed: () async {
+              Position position=await _determinePosition();
+              //await GetAddressFromLatLong(position);
+              print("hello2");
+              raload(position);
+              _mapController.move(LatLng(map_class.lat,map_class.long), 13.0);
+            },
+          ),
+
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
     );
   }
 }

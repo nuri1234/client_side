@@ -82,7 +82,7 @@ class _SosState extends State<Sos> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(CitySafty, style: TextStyle(color: app_colors.city_safty),),
+        title: Text("CitySafty", style: TextStyle(color: app_colors.city_safty),),
         backgroundColor: app_colors.app_bar_background,
         elevation: 10,
         actions: [
