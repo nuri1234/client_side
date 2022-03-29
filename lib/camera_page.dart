@@ -1,4 +1,4 @@
-import 'package:camera/camera.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -17,6 +17,7 @@ class camera_page extends StatefulWidget {
 
 class _camera_pageState extends State<camera_page> {
   File? imageFile;
+  bool _isButtonDisabled=false;
   Widget img_picker_icon() => Icon(
     Icons.camera,color: Colors.blue.withOpacity(0.2),size: 40,
   );
@@ -24,8 +25,8 @@ class _camera_pageState extends State<camera_page> {
       Icons.delete_forever_sharp,color: Colors.red,size: 30,
   );
   Widget img_container(File img) => Container(
-    width: 640,
-    height: 480,
+    width: 540,
+    height: 380,
 
     alignment: Alignment.center,
     decoration: BoxDecoration(
@@ -38,8 +39,8 @@ class _camera_pageState extends State<camera_page> {
     ),
   );
   Widget non_img_container()=>Container(
-    width: 640,
-    height: 480,
+    width: 540,
+    height: 380,
     alignment: Alignment.center,
     decoration: BoxDecoration(
       color: Colors.grey,
@@ -63,26 +64,49 @@ class _camera_pageState extends State<camera_page> {
   Widget Button_Row()=>Row(children: [
     Expanded(
         child: ElevatedButton(
-      onPressed: ()=>getImage(source: ImageSource.camera),
+
+      onPressed: ()
+      {
+        _isButtonDisabled?null:
+        getImage(source: ImageSource.camera);
+        my_images.count++;
+        if (my_images.count>=3){
+
+          setState(() {_isButtonDisabled=true;});
+
+        }
+        },
+
       child: Text(my_texts.captur_image,style:my_texts.buttonTextStyle,),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)
             ),
-            primary: app_colors.button,
+            primary: _isButtonDisabled?app_colors.Disablebutton:app_colors.button,
             minimumSize: Size(20.0, 30.0),
           ),
+
+
 
     )),
     SizedBox(width: 4,),
     Expanded(child: ElevatedButton(
-      onPressed: ()=>getImage(source: ImageSource.gallery),
+      onPressed: (){
+        _isButtonDisabled?null:
+        getImage(source: ImageSource.gallery);
+        my_images.count++;
+        if (my_images.count>=3){
+
+          setState(() {_isButtonDisabled=true;});
+
+        }
+        },
       child: Text(my_texts.select_image,style:my_texts.buttonTextStyle,),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)
         ),
-        primary: app_colors.button,
+        primary: _isButtonDisabled?app_colors.Disablebutton:app_colors.button,
         minimumSize: Size(20.0, 30.0),
       ),
     )),
@@ -143,7 +167,9 @@ class _camera_pageState extends State<camera_page> {
                 my_images.imageFile1=my_images.imageFile2;
                 my_images.imageFile2=my_images.imageFile3;
                 my_images.imageFile3=null;
-              });},
+                my_images.count--;
+                _isButtonDisabled=false;}
+              );},
 
               icon:img_delete_icon(),
               tooltip: my_texts.delet_image,
@@ -154,6 +180,8 @@ class _camera_pageState extends State<camera_page> {
               onPressed: (){setState(() {
                 my_images.imageFile2=my_images.imageFile3;
                 my_images.imageFile3=null;
+                my_images.count--;
+                  _isButtonDisabled=false;
               });},
               icon:img_delete_icon(),
               tooltip:my_texts.delet_image,
@@ -161,13 +189,14 @@ class _camera_pageState extends State<camera_page> {
             SizedBox(width:50,),
             if(my_images.imageFile3 != null)
             IconButton(
-              onPressed: (){setState(() {my_images.imageFile3=null; });},
+              onPressed: (){setState(() {
+                my_images.imageFile3=null;
+              my_images.count--;
+              _isButtonDisabled=false;
+              });},
               icon:img_delete_icon(),
               tooltip: my_texts.delet_image,
             ),
-
-
-
 
             ],),
         ],
@@ -210,7 +239,7 @@ class _camera_pageState extends State<camera_page> {
           ),
           IconButton(
             onPressed:() {
-
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Sos()));
             },
             icon: Icon(Icons.verified,color: Colors.green,size: 40,),
             tooltip: my_texts.continue_bot,
